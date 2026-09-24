@@ -8,13 +8,13 @@
 - Polygonがblock gas limitとブロック生成間隔を変更し、一秒あたりの最大gas枠を拡張したこと
 - 三つの観測局面で全宛先のgasUsed上位を集計すると、確認済みPolymarket関連コントラクトが上位に現れること
 - 2025年の平常期と2026年の平常期を比べると、確認済みPolymarket直接宛先5コントラクトの推定gasUsed/秒が増えていること
-- JPYCコントラクトへの単純なERC-20 `transfer`の匿名化済み標本で、手数料の要約統計が局面ごとに異なること
+- JPYCコントラクトへの単純なERC-20 `transfer`の個別標本で、手数料の要約統計が局面ごとに異なること
 
 本リポジトリが推定しないものは、Polymarketがガス価格を何gwei押し上げたかという因果効果である。ここで示すのは、確認済みの直接宛先に届いた取引のgasUsed構成と、その時系列上の変化である。内部callは対象外であり、Polymarket活動の全量推定でもない。
 
 ## 構成
 
-- `data/`：公開用に最小化した日次指標、局面別要約、匿名化済みJPYC費用統計、再現用ブロック標本
+- `data/`：日次指標、局面別要約、図表の元となる集計表、再現用ブロック標本
 - `figures/`：リサーチメモに掲載した4図
 - `scripts/`：主要な集計・図表作成スクリプト
 - `PROVENANCE.md`：取得元、取得日時、RPC、期間、方法、限界
@@ -24,14 +24,14 @@
 ## 主要な結果を確認する順番
 
 1. `figures/01_polygon_fee_states_timeline_capacity_milestones.png` と `data/polygon_daily_fee_states.csv` で、日次gas priceと一秒あたりの最大gas枠を確認する。
-2. `data/phase_top_recipients_public.csv` で、三局面の全宛先集計における確認済みPolymarketコントラクトの順位・構成比を確認する。
-3. `figures/03_polygon_daily_known_polymarket_recipient_share.png` と `data/polymarket_direct_group_daily_share.csv` で、5コントラクトの経路別構成を確認する。
-4. `figures/02_polygon_polymarket_gas_usage_floor.png` と `data/polymarket_gas_usage_floor_panel.csv`、`data/polymarket_gas_usage_floor_summary.csv` で、平常期のgasUsed/秒を比較する。
-5. `figures/04_jpyc_direct_transfer_fee_by_gas_state.png` と `data/jpyc_direct_transfer_fee_summary_jpy.csv` で、JPYC直接送金の要約統計を確認する。
+2. `figures/02_jpyc_direct_transfer_fee_by_gas_state.png` と `data/jpyc_direct_transfer_fee_summary_jpy.csv` で、JPYC直接送金の要約統計を確認する。
+3. `data/phase_top_recipients_public.csv` で、三局面の全宛先集計における確認済みPolymarketコントラクトの順位・構成比を確認する。
+4. `figures/03_polygon_daily_known_polymarket_recipient_share.png` と `data/polymarket_direct_group_daily_share.csv` で、5コントラクトの経路別構成を確認する。
+5. `figures/04_polygon_polymarket_gas_usage_floor.png` と `data/polymarket_gas_usage_floor_panel.csv`、`data/polymarket_gas_usage_floor_summary.csv` で、平常期のgasUsed/秒を比較する。
 
 ## 再実行について
 
-スクリプトはPython 3.11で実行した。主な依存関係は `pandas`、`numpy`、`matplotlib` である。オンチェーン再取得にはPolygon JSON-RPCが必要であり、調査ではTenderly Public Polygon JSON-RPCを用いた。公開データには生ログ・個別取引の明細を含めないため、全工程を完全に再取得する場合は `PROVENANCE.md` の範囲と方法に従ってRPCから再収集する。
+スクリプトはPython 3.11で実行した。主な依存関係は `pandas`、`numpy`、`matplotlib` である。オンチェーン再取得にはPolygon JSON-RPCが必要であり、調査ではTenderly Public Polygon JSON-RPCを用いた。取引ログ・receipt明細は配布せず、取得範囲、乱数シード、抽出済みブロック一覧、再取得スクリプトを固定して再現可能にしている。詳細は `PROVENANCE.md` と `DATA_DICTIONARY.md` を参照。
 
 ## 出典
 

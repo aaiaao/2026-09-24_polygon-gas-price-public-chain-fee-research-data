@@ -11,11 +11,11 @@
 | 公開ファイル／図表 | 一次出所 | 取得日時・範囲 | 公開物に含める再現材料 |
 | --- | --- | --- | --- |
 | `polygon_daily_fee_states.csv`、図1 | [PolygonScan Charts](https://polygonscan.com/charts) のCSV | 2026-09-24 07:46 JSTに取得。2025-01-01〜2026-09-22 UTCの日次値 | 日次統合表、図表、局面判定ロジック |
-| `sampled_blocks_all_days.csv`、図3・図4 | Tenderly Public Polygon JSON-RPC `https://tenderly.rpc.polygon.community/` | 2026-09-24。2025-01-01〜2026-09-22 UTC、630日×各日20ブロック＝12,600ブロック | 日付・ブロック番号の標本、集計済み日次表、コード |
-| `phase_top_recipients_public.csv`、表2 | 同上 | 2026-09-24。図1の三局面から、各日20ブロックを抽出 | 未確認アドレスを伏せた局面別上位表、確認済みコントラクトのラベル |
+| `sampled_blocks_all_days.csv`、図3・図4 | Tenderly Public Polygon JSON-RPC `https://tenderly.rpc.polygon.community/` | 2026-09-24。2025-01-01〜2026-09-22 UTC、630日×各日20ブロック＝12,600ブロック | 日付・ブロック番号、乱数シード、集計済み日次表、再取得・集計コード |
+| `phase_top_recipients_public.csv`、表2 | 同上 | 2026-09-24。図1の三局面から、各日20ブロックを抽出 | 上位宛先表、確認済みコントラクトのラベル |
 | `polymarket_direct_group_daily_share.csv`、図3 | 同上 | 同上 | 5コントラクトとその他の宛先の集計値 |
 | `polymarket_gas_usage_floor_panel.csv`、`polymarket_gas_usage_floor_summary.csv`、図4・表3 | 同上とPolygonScan日次表 | 同上 | 全630日パネルと、平常期338日・240日の要約統計 |
-| `jpyc_direct_transfer_fee_summary_jpy.csv`、図2・表1 | Tenderly Public Polygon JSON-RPC | 2026-09-24。現行JPYCコントラクト `0xE7C3D8C9a439feDe00D2600032D5dB0Be71C3c29`、2025-08-01 UTC以降。直接ERC-20 `transfer`の抽出標本 | 匿名化済み局面別要約統計のみ |
+| `jpyc_direct_transfer_fee_summary_jpy.csv`、図2・表1 | Tenderly Public Polygon JSON-RPC | 2026-09-24。現行JPYCコントラクト `0xE7C3D8C9a439feDe00D2600032D5dB0Be71C3c29`、2025-08-01 UTC以降。直接ERC-20 `transfer`の抽出標本 | 取得範囲、乱数シード、標本化・receipt取得・円換算コード、要約統計 |
 | `usd_jpy_daily_rates.csv` | [Frankfurter API](https://www.frankfurter.app/)（USD base / JPY quote） | 2026-09-24 12:44 JST | 使用した日次レート表 |
 
 ## PolygonScanの元CSV
@@ -34,6 +34,8 @@
 
 ## 集計方法
 
+再取得の固定条件（RPC、対象期間、ブロック番号、乱数シード、JPYC標本条件）は `data/reproducibility_parameters.json` に記録した。宛先別gasUsedは `sampled_blocks_all_days.csv` の12,600ブロックを用いれば、乱数生成を経ずに同じブロックから再計算できる。
+
 ### 取引手数料
 
 ```text
@@ -41,7 +43,7 @@ fee_POL = gasUsed × effectiveGasPrice
 fee_JPY = fee_POL × POL/USD（日次）× USD/JPY（日次）
 ```
 
-JPYC分析は、上記コントラクトを取引の最初の宛先として直接呼ぶERC-20 `transfer`に限定する。旧JPYC、router・smart wallet等を経由する操作、個別取引の生データは含めない。
+JPYC分析は、上記コントラクトを取引の最初の宛先として直接呼ぶERC-20 `transfer`に限定する。旧JPYC、router・smart wallet等を経由する操作は分析対象に含めない。全Transferログと個別取引の生データは配布せず、`jpyc_transfer_inventory.py`、`jpyc_fee_state_sample.py`、`jpyc_receipt_fee_analysis.py`で再取得する。
 
 ### 宛先別gasUsed
 

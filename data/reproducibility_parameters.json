@@ -1,0 +1,24 @@
+{
+  "analysis_as_of_jst": "2026-09-24",
+  "polygon_rpc_url": "https://tenderly.rpc.polygon.community/",
+  "polygon_daily_scope_utc": {
+    "start": "2025-01-01",
+    "end": "2026-09-22",
+    "days": 630
+  },
+  "recipient_gas_sample": {
+    "blocks_per_utc_day": 20,
+    "random_seed": 20260924,
+    "selected_blocks_file": "sampled_blocks_all_days.csv",
+    "method": "Each selected block is fixed in the CSV. The source script may also regenerate the same design from the daily calendar and this seed."
+  },
+  "jpyc_direct_transfer_sample": {
+    "contract_address": "0xE7C3D8C9a439feDe00D2600032D5dB0Be71C3c29",
+    "start_utc": "2025-08-01T00:00:00Z",
+    "anchor_block": 74647463,
+    "inventory_end_block": 94336190,
+    "sample_size_per_group": 300,
+    "random_seed": 20260924,
+    "scope": "Direct ERC-20 transfer only; legacy JPYC and routed or smart-wallet transactions excluded."
+  }
+}

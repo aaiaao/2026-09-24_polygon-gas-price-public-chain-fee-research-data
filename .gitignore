@@ -3,9 +3,9 @@
 .venv/
 __pycache__/
 *.py[cod]
+private/
+.envrc
 *.jsonl
 raw/
-private/
 **/*transaction*.csv
-**/*transfer_events*.csv
-**/*receipt_records*.csv
+**/*receipt*.csv
