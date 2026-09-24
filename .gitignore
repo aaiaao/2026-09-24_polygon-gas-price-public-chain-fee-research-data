@@ -1,0 +1,11 @@
+.DS_Store
+.env
+.venv/
+__pycache__/
+*.py[cod]
+*.jsonl
+raw/
+private/
+**/*transaction*.csv
+**/*transfer_events*.csv
+**/*receipt_records*.csv
