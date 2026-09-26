@@ -8,7 +8,7 @@ Notebookセルでの実行例:
     from pathlib import Path
     import sys, importlib
 
-    SCRIPT_DIR = Path("/Users/yanari/Documents/Codex/2026-09-24/referenced-chatgpt-conversation-this-is-an/outputs")
+    SCRIPT_DIR = Path.cwd() / "scripts"
     if str(SCRIPT_DIR) not in sys.path:
         sys.path.insert(0, str(SCRIPT_DIR))
     import jpyc_fee_state_sample

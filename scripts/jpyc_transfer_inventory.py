@@ -7,7 +7,7 @@ Notebookセルでの実行例:
 
     from pathlib import Path
     import sys
-    sys.path.insert(0, "/Users/yanari/Documents/Codex/2026-09-24/referenced-chatgpt-conversation-this-is-an/outputs")
+    sys.path.insert(0, str(Path.cwd() / "scripts"))
     from jpyc_transfer_inventory import run_inventory
 
     manifest = run_inventory(
